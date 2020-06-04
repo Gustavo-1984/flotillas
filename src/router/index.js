@@ -24,7 +24,7 @@ var router = new VueRouter({
             component: Inicio,
             meta: {
                 admin: true,
-                user: true
+                users: true
             },
         },
         {
@@ -33,7 +33,7 @@ var router = new VueRouter({
             component: Reportes,
             meta: {
                 admin: true,
-                user: true
+                users: true
             },
         },
         {
@@ -42,7 +42,7 @@ var router = new VueRouter({
             component: AltaVehiculos,
             meta: {
                 admin: true,
-                user: true
+                users: true
             },
         },
         {
@@ -51,7 +51,7 @@ var router = new VueRouter({
             component: CambioPrecio,
             meta: {
                 admin: true,
-                user: true
+                users: true
             },
         },
         {
@@ -60,7 +60,7 @@ var router = new VueRouter({
             component: Rendimiento,
             meta: {
                 admin: true,
-                user: true
+                users: true
             },
         },
         {
@@ -118,16 +118,16 @@ var router = new VueRouter({
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.libre)) {
         next()
-    } else if (store.state.usuario && store.state.usuario.rol == 'admin') {
+    } else if (store.state.user && store.state.user.rol == 'admin') {
         if (to.matched.some(record => record.meta.admin)) {
             next()
         }
-    } else if (store.state.usuario && store.state.usuario.rol == 'user') {
-        if (to.matched.some(record => record.meta.user)) {
+    } else if (store.state.user && store.state.user.rol == 'users') {
+        if (to.matched.some(record => record.meta.users)) {
             next()
         }
     } else {
-        next({ name: 'login' })
+        next()
     }
 })
 

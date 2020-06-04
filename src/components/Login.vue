@@ -45,23 +45,24 @@ export default {
     methods:{
         ingresar(){
           let me = this
-            axios.post('usuarios/login',{usuario: this.usuario, password: this.password})
+            axios.post('api/auth',{usuario: this.usuario, password: this.password})
             .then(respuesta =>{
+              console.log(respuesta.data);
                 return respuesta.data
 
             })
             .then(data=>{
-              me.$store.dispatch("guardarToken", data.tokenReturn)
+              me.$store.dispatch("guardarToken", data.token)
               me.$router.push({name: 'inicio'})
             })
             .catch(function(error){
                 //console.log(error);
                 me.errorM=null
-                if(error.response.status == 404){
-                  me.errorM="Usuario inexistente"
-                }else{
-                  me.errorM="Error con el servidor"
-                }
+                // if(error.response.status == 404){
+                //   me.errorM="Usuario inexistente"
+                // }else{
+                //   me.errorM="Error con el servidor"
+                // }
 
             })
         }

@@ -140,13 +140,13 @@ export default {
 
   computed:{
     logueado(){
-      return this.$store.state.usuario
+      return this.$store.state.user
     },
     esAdmin(){
-      return this.$store.state.usuario && this.$store.state.usuario.rol == 'admin'
+      return this.$store.state.user && this.$store.state.user.rol === 'admin'
     },
     esUser(){
-      return this.$store.state.usuario && this.$store.state.usuario.rol == 'user'
+      return this.$store.state.user && this.$store.state.user.rol === 'users'
     }
   },
   created(){

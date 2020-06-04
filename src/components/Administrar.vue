@@ -68,7 +68,7 @@ import axios from 'axios'
             let me = this
             let header={"token": this.$store.state.token}
             let configuracion={headers:header}
-            axios.post('usuarios/add',{rol:this.rol, usuario:this.usuario, password:this.password, estado:this.estado }, configuracion)
+            axios.post('api/usuarios',{rol:this.rol, usuario:this.usuario, password:this.password, estado:this.estado }, configuracion)
             .then(respuesta =>{
                 me.limpiar()
             }).catch(function(error){
