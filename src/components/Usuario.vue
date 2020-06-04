@@ -84,7 +84,7 @@ import axios from 'axios'
             let configuracion={headers:header}
             axios.get('usuarios/list', configuracion).then(function(response){
                me.usuario=response.data
-               
+              
             }).catch(function(error){
                 
             })
@@ -107,15 +107,6 @@ import axios from 'axios'
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
         })
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
-        }
-        this.close()
       },
     },
   }
