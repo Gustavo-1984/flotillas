@@ -3,7 +3,7 @@
     <v-navigation-drawer v-model="drawer" app v-if="logueado">
       <v-list dense>
 
-        <template app v-if="logueado">
+        <template app v-if="logueado || esAdmin">
           <v-list-item  :to="{name: 'inicio'}">
             <v-list-item-action>
               <v-icon>home</v-icon>
@@ -122,11 +122,13 @@
       <v-footer color="#546E7A" app>
         <span class="white--text">&copy; 2020 - Grupo Petrolero Arca</span>
       </v-footer>
+      
+     
        </template>
 
-     <router-view/>
-     
+      <router-view/>
   </v-app>
+ 
 </template>
 
 <script>
@@ -140,14 +142,18 @@ export default {
 
   computed:{
     logueado(){
-      return this.$store.state.user
+  
+      return this.$store.state.usuario
+     
     },
     esAdmin(){
-      return this.$store.state.user && this.$store.state.user.rol === 'admin'
+
+      return this.$store.state.usuario && this.$store.state.usuario.rol == 'admin'
+      
     },
     esUser(){
-      return this.$store.state.user && this.$store.state.user.rol === 'users'
-    }
+      return this.$store.state.usuario && this.$store.state.usuario.rol == 'users'
+    },
   },
   created(){
     this.$store.dispatch("autoLogin")
@@ -155,6 +161,7 @@ export default {
   methods:{
     salir(){
       this.$store.dispatch("salir")
+      
     }
   }
 }

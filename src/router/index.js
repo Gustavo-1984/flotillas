@@ -14,7 +14,7 @@ import Rendimiento from '../components/Rendimiento'
 
 Vue.use(VueRouter)
 
-var router = new VueRouter({
+const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
     routes: [{
@@ -118,16 +118,17 @@ var router = new VueRouter({
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.libre)) {
         next()
-    } else if (store.state.user && store.state.user.rol == 'admin') {
+    } else if (store.state.usuario && store.state.usuario.rol == "admin") {
         if (to.matched.some(record => record.meta.admin)) {
             next()
         }
-    } else if (store.state.user && store.state.user.rol == 'users') {
+    } else if (store.state.usuario && store.state.usuario.rol == "users") {
         if (to.matched.some(record => record.meta.users)) {
             next()
         }
     } else {
-        next()
+        next({ name: 'login' })
+
     }
 })
 

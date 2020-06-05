@@ -47,9 +47,7 @@ export default {
           let me = this
             axios.post('api/auth',{usuario: this.usuario, password: this.password})
             .then(respuesta =>{
-              console.log(respuesta.data);
                 return respuesta.data
-
             })
             .then(data=>{
               me.$store.dispatch("guardarToken", data.token)
@@ -57,7 +55,7 @@ export default {
             })
             .catch(function(error){
                 //console.log(error);
-                me.errorM=null
+              
                 // if(error.response.status == 404){
                 //   me.errorM="Usuario inexistente"
                 // }else{
