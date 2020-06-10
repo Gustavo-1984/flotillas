@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import axios from 'axios'
   export default {
     data: () => ({
@@ -59,6 +60,7 @@ import axios from 'axios'
     }),
 
     computed: {
+      ...mapState(['token']),
         dateRange () {
         return this.dates.join(' ~ ')
       },
@@ -79,11 +81,17 @@ import axios from 'axios'
 
     methods: {
         listar(){
+            let config = {
+              headers:{
+                token: this.token
+              }
+            }
+            
             let me = this
-            let header={"token": this.$store.state.token}
-            let configuracion={headers:header}
-            axios.get('usuarios/list', configuracion).then(function(response){
+            axios.get('usuario', config).then(function(response){
+              console.log(response.data);
                me.usuario=response.data
+               
               
             }).catch(function(error){
                 

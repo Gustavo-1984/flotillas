@@ -7,37 +7,61 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        token: null,
-        usuario: null
+        token: '',
+        usuario: '',
+        usuarioDb: ''
     },
     mutations: {
-        setToken(state, token) {
-            state.token = token
+
+        obtenerUsuario(state, payload) {
+            state.token = payload
+            if (payload === '') {
+                state.usuario = ''
+            } else {
+                state.usuario = decode(payload)
+                router.push({ name: 'inicio' })
+            }
         },
-        setUsuario(state, usuario) {
-            state.usuario = usuario.user
+        obtenerRol(state, payload) {
+            state.usuarioDb = payload
+            if (payload === '') {
+                state.usuarioDb = ''
+            } else {
+                state.usuarioDb = payload
+            }
         }
     },
     actions: {
-        guardarToken({ commit }, token) {
-            commit("setToken", token)
-            commit("setUsuario", decode(token))
-            localStorage.setItem("token", token)
+        guardarRol({ commit }, payload) {
+            localStorage.setItem('usuarioDb', payload)
+            commit('obtenerRol', payload)
         },
-        salir({ commit }) {
-            localStorage.removeItem("token")
-            commit("setToken", null)
-            commit("setUsuario", null)
-
+        guardarUsuario({ commit }, payload) {
+            localStorage.setItem('token', payload)
+            commit('obtenerUsuario', payload)
+        },
+        cerrarSesion({ commit }) {
+            commit('obtenerUsuario', '')
+            localStorage.removeItem('token')
+            localStorage.removeItem('usuarioDb')
             router.push({ name: 'login' })
+
         },
-        autoLogin({ commit }) {
-            let token = localStorage.getItem("token")
+        leerToken({ commit }) {
+            const token = localStorage.getItem('token')
             if (token) {
-                commit("setToken", token)
-                commit("setUsuario", decode(token))
+                commit('obtenerUsuario', token)
+            } else {
+                commit('obtenerUsuario', '')
             }
-            router.push({ name: 'inicio' })
         }
+
+    },
+    getters: {
+
+        esActivo: state => !!state.token,
+        esAdmin: state => state.usuarioDb.rol === 'admin'
+
+
     }
 })

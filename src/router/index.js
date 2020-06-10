@@ -22,115 +22,85 @@ const router = new VueRouter({
             path: '/',
             name: 'inicio',
             component: Inicio,
-            meta: {
-                admin: true,
-                users: true
-            },
+            meta: { requiereAuth: true }
         },
         {
             path: '/reportes',
             name: 'reportes',
             component: Reportes,
-            meta: {
-                admin: true,
-                users: true
-            },
+            meta: { requiereAuth: true }
         },
         {
             path: '/alta-vehiculos',
             name: 'altavehiculos',
             component: AltaVehiculos,
-            meta: {
-                admin: true,
-                users: true
-            },
+            meta: { requiereAuth: true }
         },
         {
             path: '/cambio-precio',
             name: 'cambioprecio',
             component: CambioPrecio,
-            meta: {
-                admin: true,
-                users: true
-            },
+            meta: { requiereAuth: true }
         },
         {
             path: '/rendimiento',
             name: 'rendimiento',
             component: Rendimiento,
-            meta: {
-                admin: true,
-                users: true
-            },
+            meta: { requiereAuth: true }
         },
         {
             path: '/admin',
             name: 'admin',
             component: Administrar,
             meta: {
-                admin: true
-            },
+                requiereAuth: true
+            }
         },
         {
             path: '/serie',
             name: 'serie',
             component: Serie,
-            meta: {
-                admin: true
-            },
+            meta: { requiereAuth: true }
+
         },
         {
             path: '/serietabla',
             name: 'serietabla',
             component: SerieTabla,
-            meta: {
-                admin: true
-            },
+            meta: { requiereAuth: true }
         },
         {
             path: '/usuario',
             name: 'usuario',
             component: Usuario,
             meta: {
-                admin: true
-            },
+                requiereAuth: true,
+
+
+            }
         },
         {
             path: '/login',
             name: 'login',
             component: Login,
-            meta: {
-                libre: true
-            },
+
         },
         {
             path: '/about',
             name: 'About',
-            // route level code-splitting
-            // this generates a separate chunk (about.[hash].js) for this route
-            // which is lazy-loaded when the route is visited.
             component: () =>
                 import ( /* webpackChunkName: "about" */ '../views/About.vue')
         }
     ]
 })
-
 router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.libre)) {
-        next()
-    } else if (store.state.usuario && store.state.usuario.rol == "admin") {
-        if (to.matched.some(record => record.meta.admin)) {
-            next()
-        }
-    } else if (store.state.usuario && store.state.usuario.rol == "users") {
-        if (to.matched.some(record => record.meta.users)) {
-            next()
-        }
-    } else {
+    const rutaProtegida = to.matched.some(record => record.meta.requiereAuth)
+    if (rutaProtegida && store.state.token === '') {
         next({ name: 'login' })
-
+    } else {
+        next()
     }
-})
 
+})
 
 export default router

@@ -97,6 +97,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import axios from 'axios'
   export default {
     data: () => ({
@@ -105,12 +106,11 @@ import axios from 'axios'
         consumos: [],
       dialog: false,
       headers: [
-        { text: 'SERIE', value: 'serie' },
         { text: 'VEHICULO', value: 'vehiculo' },
         { text: 'FOLIO', value: 'id' },
         { text: 'FECHA', value: 'date' },
         { text: 'HORA', value: 'time'},
-        { text: 'DESCRIPCION', value: 'time'},
+        { text: 'DESCRIPCION', value: 'descripcion'},
         { text: 'PLACAS', value: 'placas'},
         { text: 'UNIDAD', value: 'unidad'},
         { text: 'PRECIO', value: 'precio'},
@@ -135,6 +135,7 @@ import axios from 'axios'
     }),
 
     computed: {
+      ...mapState(['token']),
         dateRange () {
         return this.dates.join(' ~ ')
       },
@@ -155,12 +156,17 @@ import axios from 'axios'
 
     methods: {
         listar(){
+          
+            let config = {
+              headers:{
+                token: this.token
+              }
+            }
             let me = this
-            let header={"token": this.$store.state.token}
-            let configuracion={headers:header}
-            axios.get('consumos/list', configuracion).then(function(response){
-               me.consumos=response.data
-               console.log(me.consumos);
+            axios.get('consumos', config).then(function(res){
+              console.log(res.data);
+               me.consumos=res.data
+               
             }).catch(function(error){
                 
             })

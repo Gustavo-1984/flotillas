@@ -1,9 +1,8 @@
 <template>
   <v-app id="app">
-    <v-navigation-drawer v-model="drawer" app v-if="logueado">
+    <v-navigation-drawer v-model="drawer" app v-if="esActivo" >
       <v-list dense>
-
-        <template app v-if="logueado || esAdmin">
+        <template app v-if="esActivo">
           <v-list-item  :to="{name: 'inicio'}">
             <v-list-item-action>
               <v-icon>home</v-icon>
@@ -47,7 +46,7 @@
           </v-list-item>
         </template>
 
-        <template app v-if="esAdmin">
+        <template app v-if="esAdmin" >
           <v-list-item  :to="{name: 'serietabla'}">
             <v-list-item-action>
               <v-icon>list</v-icon>
@@ -58,7 +57,7 @@
           </v-list-item>
         </template>
 
-        <template app v-if="logueado">
+        <template app v-if="esActivo">
           <v-list-item  :to="{name: 'reportes'}">
             <v-list-item-action>
               <v-icon>equalizer</v-icon>
@@ -69,7 +68,7 @@
           </v-list-item>
         </template>
 
-        <template app v-if="logueado">
+        <template app v-if="esActivo">
           <v-list-item  :to="{name: 'altavehiculos'}">
             <v-list-item-action>
               <v-icon>ev_station</v-icon>
@@ -82,7 +81,7 @@
     
   
 
-    <template app v-if="logueado">
+    <template app v-if="esActivo">
           <v-list-item  :to="{name: 'cambioprecio'}">
             <v-list-item-action>
               <v-icon>attach_money</v-icon>
@@ -93,7 +92,7 @@
           </v-list-item>
         </template>
 
-        <template app v-if="logueado">
+        <template v-if="esActivo">
           <v-list-item  :to="{name: 'rendimiento'}">
             <v-list-item-action>
               <v-icon>insights</v-icon>
@@ -107,32 +106,32 @@
     </v-list>
     </v-navigation-drawer>
   
-  <template v-if="logueado">
+  <template v-if="esActivo">
       <v-app-bar app color="#546E7A" dark>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title>Control de Flotillas</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn @click="salir()" icon v-if="logueado">
+        <v-btn @click="cerrarSesion" icon v-if="esActivo">
           <v-icon>logout</v-icon>Exit
         </v-btn>
       </v-app-bar>
        </template>
-      
-      <template v-if="logueado">
+     
+     
+      <template v-if="esActivo">
       <v-footer color="#546E7A" app>
         <span class="white--text">&copy; 2020 - Grupo Petrolero Arca</span>
       </v-footer>
-      
      
        </template>
-
-      <router-view/>
+  <router-view/>
+      
   </v-app>
  
 </template>
 
 <script>
-
+import {mapActions, mapGetters} from 'vuex'
 export default {
   name: 'App',
 
@@ -141,28 +140,15 @@ export default {
   }),
 
   computed:{
-    logueado(){
-  
-      return this.$store.state.usuario
-     
-    },
-    esAdmin(){
-
-      return this.$store.state.usuario && this.$store.state.usuario.rol == 'admin'
-      
-    },
-    esUser(){
-      return this.$store.state.usuario && this.$store.state.usuario.rol == 'users'
-    },
-  },
-  created(){
-    this.$store.dispatch("autoLogin")
+    ...mapGetters(['esActivo']),
+    ...mapGetters(['esAdmin'])
+    
   },
   methods:{
-    salir(){
-      this.$store.dispatch("salir")
-      
-    }
-  }
+    ...mapActions(['cerrarSesion', 'leerToken'])
+  },
+  created(){
+    this.leerToken()
+  },
 }
 </script>
