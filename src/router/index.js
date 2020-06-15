@@ -11,6 +11,7 @@ import Usuario from '../components/Usuario'
 import AltaVehiculos from '../components/AltaVehiculos'
 import CambioPrecio from '../components/CambioPrecio'
 import Rendimiento from '../components/Rendimiento'
+import VerVehiculos from '../components/VerVehiculos'
 
 Vue.use(VueRouter)
 
@@ -73,6 +74,16 @@ const router = new VueRouter({
             path: '/usuario',
             name: 'usuario',
             component: Usuario,
+            meta: {
+                requiereAuth: true,
+
+
+            }
+        },
+        {
+            path: '/vehiculo',
+            name: 'vehiculo',
+            component: VerVehiculos,
             meta: {
                 requiereAuth: true,
 

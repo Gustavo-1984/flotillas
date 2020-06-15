@@ -5,7 +5,7 @@
         <v-col class="text-center" xs12 md6>
           <v-card color="#FFFFFF" class="mx-auto">
              <v-card-title>
-      Series
+      Vehiculos
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -28,22 +28,29 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import axios from 'axios'
   export default {
     data: () => ({
         dates: ['2019-09-10', '2019-09-20'],
         search:"",
         serie: [],
-        year: "",
       dialog: false,
       headers: [
-        { text: 'SERIE', value: 'serie' },
-        { text: 'ESTADO', value: 'estado' },
-        { text: 'USUARIO', value: 'usuario' },
+        { text: 'TAG', value: 'tag' },
+        { text: 'PLACAS', value: 'placas' },
+        { text: 'NUMERO ECONOMICO', value: 'numEconomico' },
+        { text: 'UNIDAD', value: 'unidad' },
+        { text: 'DESCRIPCION', value: 'descripcion' },
+        { text: 'MARCA', value: 'marca' },
+        { text: 'COLOR', value: 'color' },
+        { text: 'LITROS', value: 'litros' },
+        { text: 'ACTIVO', value: 'estado' },
       ],
     }),
 
     computed: {
+        ...mapState(['token']),
         dateRange () {
         return this.dates.join(' ~ ')
       },
@@ -64,13 +71,14 @@ import axios from 'axios'
 
     methods: {
         listar(){
+              let config = {
+        headers: {
+          token: this.token,
+        },
+      };
           let me = this
-            axios.get('serie').then(function(response){
+            axios.get('altaVehiculo', config).then(function(response){
                me.serie=response.data
-               const date = response.data[0].createdAt
-               let newDate = date.split('T')
-               let year = newDate[0]
-               me.year = year
             }).catch(function(error){
                 
             })

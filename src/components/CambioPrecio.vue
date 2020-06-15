@@ -7,36 +7,31 @@
       <v-row align="center" justify="center">
         <v-col class="text-center" xs12 md6>
           <v-card color="#FFFFFF" class="mx-auto" height="550px" width="550" outlined>
-    <form>
-    <v-text-field
-     v-model="serie"
-      label="Serie"
-      required
-    ></v-text-field>
+     <form>
+        <v-menu v-model="menu2" transition="scale-transition" offset-y min-width="290px">
+        <v-date-picker v-model="date" :min="minimo" reactive></v-date-picker>
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field  v-model="date"  label="Fecha" prepend-icon="event" v-bind="attrs" v-on="on"></v-text-field>
+        </template>
+      </v-menu>
 
-    <v-text-field
-      v-model="estado"
-      label="Estado"
-      required
-    ></v-text-field>
-
-     <v-text-field
-      v-model="estado"
-      label="Estado"
-      required
-    ></v-text-field>
+      <v-menu ref="menu" v-model="menu" transition="scale-transition" offset-y min-width="290px" :close-on-content-click="false">
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field  v-model="hora" readonly label="Hora" prepend-icon="access_time" v-bind="attrs" v-on="on"></v-text-field>
+        </template>
+        <v-time-picker v-model="hora" ></v-time-picker>
+      </v-menu>
 
      <v-text-field
-      v-model="estado"
-      label="Estado"
+      v-model="precio"
+      label="Precio"
       required
+      prepend-icon="attach_money"
     ></v-text-field>
-
-   
 
     <v-btn color="primary" class="mr-4 mt-5" @click="enviar">Enviar</v-btn>
     <v-btn color="primary" class="mt-5" @click="limpiar">Limpiar</v-btn>
-  </form>
+</form>
           </v-card>
         </v-col>
       </v-row>
@@ -45,74 +40,52 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import axios from 'axios'
+import moment from 'moment'
+
   export default {
     data: () => ({
-        serie: '',
-        estado:'',
-        usuario:'',
-       options: null,
-       select: null,
-        usuario:[
-            {value:'id'},
-           
-        ]
-       
+        date:'',
+        hora:'',
+        precio:'',
+        menu: null,
+        menu2: null,
+        minimo: new Date().toISOString().substr(0, 10),
+        
     }),
 
     created () {
-      this.listar()
+    
+    },
+    computed:{
+    ...mapState(["token"]),
+   
     },
 
     methods: {
+      
        limpiar(){
-        this.serie= '',
-        this.usuario='',
-        this.estado=''
+        this.date= '',
+        this.hora='',
+        this.precio=''
       },
-        listar(){
-            let me = this
-            let header={"token": this.$store.state.token}
-            let configuracion={headers:header}
-            axios.get('usuarios/list', configuracion).then(function(response){
-               me.usuario=response.data
-            }).catch(function(error){
-                
-            })
-        },
 
       enviar() {
-         let me = this
-            let header={"token": this.$store.state.token}
-            let configuracion={headers:header}
-            axios.post('serie/add',{serie: this.serie, estado:this.estado, usuarioId:this.usuario}, configuracion)
-            .then(respuesta =>{
+            let config = {
+              headers: {
+                 token: this.token,
+              },
+            };
+            
+            let me = this
+            axios.post('cambio-precio',{ time:this.hora, precio:this.precio, date:this.date}, config)
+            .then((respuesta) =>{
+              console.log(respuesta.data);
                 me.limpiar()
             }).catch(function(error){
                 
             })
-      },
-
-      deleteItem (item) {
-        const index = this.desserts.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
-      },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
-        }
-        this.close()
       },
     },
   }

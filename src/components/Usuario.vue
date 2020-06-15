@@ -89,7 +89,6 @@ import axios from 'axios'
             
             let me = this
             axios.get('usuario', config).then(function(response){
-              console.log(response.data);
                me.usuario=response.data
                
               

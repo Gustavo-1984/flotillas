@@ -78,6 +78,17 @@
             </v-list-item-content>
           </v-list-item>
         </template>
+
+         <template app v-if="esActivo">
+          <v-list-item  :to="{name: 'vehiculo'}">
+            <v-list-item-action>
+              <v-icon>local_shipping</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Ver Vehiculo</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
     
   
 
@@ -119,7 +130,7 @@
      
      
       <template v-if="esActivo">
-      <v-footer color="#546E7A" app>
+      <v-footer color="#546E7A" app >
         <span class="white--text">&copy; 2020 - Grupo Petrolero Arca</span>
       </v-footer>
      
