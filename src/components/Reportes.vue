@@ -106,32 +106,17 @@ import axios from 'axios'
         consumos: [],
       dialog: false,
       headers: [
-        { text: 'VEHICULO', value: 'vehiculo' },
+        { text: 'VEHICULO', value: 'tag' },
         { text: 'FOLIO', value: 'id' },
-        { text: 'FECHA', value: 'date' },
-        { text: 'HORA', value: 'time'},
+        // { text: 'FECHA', value: 'date' },
+        { text: 'FECHA', value: 'createdAt'},
         { text: 'DESCRIPCION', value: 'descripcion'},
         { text: 'PLACAS', value: 'placas'},
         { text: 'UNIDAD', value: 'unidad'},
         { text: 'PRECIO', value: 'precio'},
         { text: 'LITROS', value: 'litros'},
         { text: 'TOTAL', value: 'total'},
-      ],
-      editedIndex: -1,
-      editedItem: {
-        name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
-      },
-      defaultItem: {
-        name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
-      },
+      ]
     }),
 
     computed: {
